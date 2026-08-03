@@ -23,11 +23,13 @@ mybatis:
 
 logging:
   level:
+    root: info
     com:
       sky:
         mapper: debug
         service: info
         controller: info
+        aspect: info
 
 sky:
   jwt:
