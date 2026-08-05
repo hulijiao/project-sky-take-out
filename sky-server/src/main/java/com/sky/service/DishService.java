@@ -49,4 +49,11 @@ public interface DishService {
      * 根据DishId 起售和停售菜品
      */
     void StartOrStop(Integer status, Long id);
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    List<Dish> list(Long categoryId);
 }
