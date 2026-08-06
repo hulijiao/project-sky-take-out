@@ -13,6 +13,7 @@ import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -34,6 +35,8 @@ public class DishServiceImpl implements DishService {
     private DishFlavorMapper dishFlavorMapper;
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
 
     /**
      * 新增菜品，同时保存对应的口味数据
@@ -164,7 +167,7 @@ public class DishServiceImpl implements DishService {
            if(setmealIds != null && setmealIds.size() > 0){
                for(Long setmealId : setmealIds){
                    Setmeal setmeal = Setmeal.builder().id(id).status(StatusConstant.DISABLE).build();
-                   setmealDishMapper.update(setmeal);
+                   setmealMapper.update(setmeal);
                }
            }
        }

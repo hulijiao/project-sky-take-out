@@ -21,12 +21,6 @@ public interface SetmealDishMapper {
     public List<Long> getSetmealIdsByDishIds(List<Long> dishIds);
 
     /**
-     * 根据 id 修改套餐数据
-     */
-    @AutoFill(OperationType.UPDATE)
-    void update(Setmeal setmeal);
-
-    /**
      * 批量保存套餐和菜品的关联关系
      *
      * @param setmealDishes

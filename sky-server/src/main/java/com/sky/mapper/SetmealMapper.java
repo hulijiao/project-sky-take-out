@@ -50,7 +50,7 @@ public interface SetmealMapper {
     void deleteById(Long setmealId);
 
     /**
-     * 修改套餐数据
+     * 根据 id 修改套餐数据
      */
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
