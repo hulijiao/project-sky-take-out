@@ -227,4 +227,47 @@ public class OrderServiceImpl implements OrderService {
 
         return orderVO;
     }
+
+    /**
+     * 用户取消订单
+     *
+     * @param id
+     */
+    public void userCancelById(Long id) throws Exception {
+        Orders ordersDB = orderMapper.getById(id);
+        if(ordersDB ==null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+       // 订单状态 1待付款 2待接单 3已接单 4派送中 5已完成 6已取消
+        // 接单和派送要给商家打电话沟通，已完成和已取消 不可再取消
+        if(ordersDB.getStatus()>2){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        //规范写法，查询对象 ordersDB 和 更新对象 orders 分开，只更新需要更新的字段，不会误将其他字段设 null
+        Orders orders = new Orders();
+        orders.setId(ordersDB.getId());
+
+        if(orders.getPayStatus()== ordersDB.TO_BE_CONFIRMED){
+            //个人小程序无法开通微信支付
+            // 订单处于待接单状态下取消，需要进行退款
+            if (ordersDB.getStatus().equals(Orders.TO_BE_CONFIRMED)) {
+               /* //调用微信支付退款接口
+                weChatPayUtil.refund(
+                        ordersDB.getNumber(), //商户订单号
+                        ordersDB.getNumber(), //商户退款单号
+                        new BigDecimal(0.01),//退款金额，单位 元
+                        new BigDecimal(0.01));//原订单金额
+                        */
+
+                //支付状态修改为 退款
+                orders.setPayStatus(Orders.REFUND);
+            }
+        }
+
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelReason("用户取消");
+        orders.setCancelTime(LocalDateTime.now());
+        orderMapper.update(orders);
+    }
 }
