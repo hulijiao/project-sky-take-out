@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单
@@ -270,4 +271,32 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelTime(LocalDateTime.now());
         orderMapper.update(orders);
     }
-}
+
+    /**
+     * 再来一单
+     *
+     * @param id
+     */
+    public void repetition(Long id) {
+        //再来一单就是将原订单中的商品重新加入到购物车中
+        //通过 orderId 拿到订单详情，将菜品信息复制到购物车中，将购物车数据插入到表中
+
+        Long userId = BaseContext.getCurrentId();
+        List<OrderDetail> orderDetailList = orderDetailMapper.getByOrderId(id);
+
+        // 将订单详情对象转换为购物车对象
+        List<ShoppingCart> shoppingCartList = orderDetailList.stream().map(x -> {
+            ShoppingCart shoppingCart = new ShoppingCart();
+
+                // 将原订单详情里面的菜品信息重新复制到购物车对象中
+                BeanUtils.copyProperties(x, shoppingCart, "id");
+                shoppingCart.setUserId(userId);
+                shoppingCart.setCreateTime(LocalDateTime.now());
+
+                return shoppingCart;
+            }).collect(Collectors.toList());
+
+            // 将购物车对象批量添加到数据库
+            shoppingCartMapper.insertBatch(shoppingCartList);
+        }
+    }
