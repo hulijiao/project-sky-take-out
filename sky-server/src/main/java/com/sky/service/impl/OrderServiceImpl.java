@@ -314,6 +314,7 @@ public class OrderServiceImpl implements OrderService {
         Page<Orders> page = orderMapper.pageQuery(ordersPageQueryDTO);
 
         // 部分订单状态，需要额外返回订单菜品信息，将Orders转化为OrderVO
+        // 场景：商家点击“查看 ”，可以看到 菜品名、数量和金额
         List<OrderVO> orderVOList = getOrderVOList(page);
 
         return new PageResult(page.getTotal(), orderVOList);
@@ -355,7 +356,7 @@ public class OrderServiceImpl implements OrderService {
             return orderDish;
         }).collect(Collectors.toList());
 
-        // 将该订单对应的所有菜品信息拼接在一起,把集合变成一串String, 宫保鸡丁*3;豆腐汤*2;
+        // 将该订单对应的所有菜品信息拼接在一起,把列表变成一串String, 宫保鸡丁*3;豆腐汤*2;
         return String.join("", orderDishList);
     }
 
