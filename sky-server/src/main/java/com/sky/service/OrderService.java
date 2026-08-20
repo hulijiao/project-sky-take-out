@@ -51,9 +51,16 @@ public interface OrderService {
     void userCancelById(Long id) throws Exception;
 
     /**
-     * 再来一单
+     * 用户再来一单
      *
      * @param id
      */
     void repetition(Long id);
+
+    /**
+     * 条件搜索订单
+     * @param ordersPageQueryDTO
+     * @return
+     */
+    PageResult conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
 }
