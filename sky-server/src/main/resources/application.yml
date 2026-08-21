@@ -55,5 +55,8 @@ sky:
     access-key-id: ${sky.alioss.access-key-id}
     access-key-secret: ${sky.alioss.access-key-secret}
     bucket-name: ${sky.alioss.bucket-name}
-
+  shop:
+    address: 广东省珠海市香洲区南屏珠海大道 8 号华发商都
+  baidu:
+    ak: LiYFAEVw5fIffxYbw5UNlG4tVy1ZE7hd
 
